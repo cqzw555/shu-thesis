@@ -1,0 +1,93 @@
+% !TeX encoding = UTF-8
+% !TeX spellcheck = <none>
+\section{算法和伪代码}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+有时候我们需要在论文中插入一些代码片段来详细说明算法的步骤，
+或者需要插入一个伪代码片段来说明算法的流程。
+
+\subsection{插入代码}
+% 设置代码样式（关键词颜色，背景颜色，插入代码语言等等）
+\lstdefinestyle{customc}{
+	belowcaptionskip=1\baselineskip,
+	breaklines=true,
+	frame=L,
+	xleftmargin=\parindent,
+	language=C,
+	showstringspaces=false,
+	basicstyle=\footnotesize\ttfamily,
+	keywordstyle=\bfseries\color{green!40!black},
+	commentstyle=\itshape\color{purple!40!black},
+	identifierstyle=\color{blue},
+	stringstyle=\color{orange},
+	numbers=left,
+}
+\lstdefinestyle{customasm}{
+	belowcaptionskip=1\baselineskip,
+	frame=L,
+	xleftmargin=\parindent,
+	language=[x86masm]Assembler,
+	basicstyle=\footnotesize\ttfamily,
+	commentstyle=\itshape\color{purple!40!black},
+}
+% 插入c语言代码
+\lstset{escapechar=@,style=customc}
+
+\begin{lstlisting}[caption={一段C语言程序。},captionpos=b]
+	#include <stdio.h>
+	#define N 10
+	/* Block
+	* comment */
+	
+	int main()
+	{
+		int i;
+		
+		// Line comment.
+		puts("Hello world!");
+		
+		for (i = 0; i < N; i++)
+		{
+			puts("LaTeX is also great for programmers!");
+		}
+		
+		return 0;
+	}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={一段Python语言程序。},captionpos=b,language=Python]
+	from mpl_toolkits.mplot3d import Axes3D
+	import matplotlib.pyplot as plt
+	import numpy as np
+	fig = plt.figure()
+	ax = fig.add_subplot(111, projection='3d')
+	for c, z in zip(['r', 'g', 'b', 'y'], [30, 20, 10, 0]):
+	xs = np.arange(20)
+	ys = np.random.rand(20)
+	# You can provide either a single color or an array. To demonstrate this,
+	# the first bar of each set will be colored cyan.
+	cs = [c] * len(xs)
+	cs[0] = 'c'
+	ax.bar(xs, ys, zs=z, zdir='y', color=cs, alpha=0.8)
+	ax.set_xlabel('X')
+	ax.set_ylabel('Y')
+	ax.set_zlabel('Z')
+	plt.show()
+	fig.savefig('bar3d.pdf')
+\end{lstlisting}
+
+\subsection{插入伪代码}
+\begin{algorithm}[H]
+	\SetAlgoLined
+	\KwResult{Write here the result }
+	initialization\;
+	\While{While condition}{
+		instructions\;
+		\eIf{condition}{
+			instructions1\;
+			instructions2\;
+		}{
+			instructions3\;
+		}
+	}
+	\caption{一个简单的算法。}
+\end{algorithm}

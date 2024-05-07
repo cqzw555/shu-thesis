@@ -1,0 +1,281 @@
+% !TeX spellcheck = <none>
+% UTF-8 encoding
+% Compile with latex+dvipdfmx, pdflatex, xelatex or lualatex
+% pdflatex is recommanded 
+% This template is released under BSD 2-Clause license.
+
+% xelatex lualatex 无法使用, Package fontspec Error: The font "SimHei" cannot be found. \section*{摘要}
+% 经测试，pdflatex 和 latex 是可以使用的，但luatex编译速度极其慢（在windows上）
+% 在archlinux上，pdflatex 无法使用，默认字体是fandol系列，没有相应字体，网上的回答是pdflatex不支持中文，但windows里的pdflatex就行
+% archlinux上测试，xelatex是可以使用的，只要安装texlive元包和texlive-langchinese就行，texlive元包中有tixlive-fontsextra，基本的字体都有，就是没有fandol
+\documentclass[UTF8]{ctexart}
+\usepackage{ifpdf,ifxetex,ifluatex}
+
+\ifPDFTeX	
+	\pdfoptionpdfminorversion = 7	%  7表示你的PDF版本 % 只有pdflatex可以用这句话，表示输出PDF文件的版本，使用latex时请注释
+\fi
+
+\ifXeTeX
+	\usepackage{ifplatform}
+	\ifwindows
+		\errmessage{在windows上请用pdflatex进行编译，xelatex在windows上字体映射好像有问题}
+	%\fi %不知道为啥这里不需要这个
+\fi
+
+
+% 自定义的一些颜色
+\usepackage{xcolor}
+\definecolor{hyperref-green}{RGB}{0,150,0}
+\definecolor{hyperref-red}{RGB}{200,0,0}
+\definecolor{hyperref-blue}{RGB}{0,0,200}
+\definecolor{hyperref-black}{RGB}{0,0,0}
+% 超链接
+\usepackage[
+    citecolor=hyperref-black,
+    linkcolor=hyperref-black,
+    urlcolor=hyperref-black,
+    menucolor=black,
+    breaklinks=true,
+    bookmarks=true,
+    colorlinks
+]{hyperref}
+
+%\usepackage{bibentry} % 可以将参考文献条目编排在文本的任何位置，常用于创建附有评注的参考文献
+%导入外部pdf
+\usepackage{pdfpages} % includepdf
+
+%% 公式和数学标识相关%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amsmath}
+\usepackage{bm} %%某些矢量需要加粗字符，除mathbf外的另一种方式%By Kuber
+\usepackage{amssymb}
+\usepackage{pifont} %提供了一些符号和图案，如圆圈数字、箭头、星星、钩子等等
+\usepackage{listings} %插入代码
+\usepackage[ruled]{algorithm2e} %算法和伪代码
+\newcommand{\cmark}{\checkmark}%
+\newcommand{\xmark}{\ding{55}}%
+
+\usepackage{diagbox} %为空单元格绘制斜表线
+\numberwithin{equation}{section} % 公式按章节编号
+\numberwithin{table}{section} % 公式按章节编号
+
+\usepackage{amsfonts}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% 插入图表和图表描述
+\usepackage{graphicx, caption, subfigure, float}
+\DeclareCaptionFormat{myformat}{\zihao{5}\selectfont#1#2#3} % 标题 5号字体 
+\captionsetup{format=myformat}
+\setlength{\abovecaptionskip}{0pt} % 设置标题与上文之间的间距
+\setlength{\belowcaptionskip}{-10pt} % 设置标题与下文之间的间距
+\captionsetup{justification=centering} %标题居中
+\usepackage{overpic} % 在图上插入图片或公式
+\usepackage{pgfplots} % 绘图
+
+%====================================================
+% 其他格式，和样式
+% 将章节标号转为中文
+\usepackage{zhnumber}
+%% geometry
+\usepackage{geometry}
+\geometry{left=3.17cm,right=3.17cm,top=3.0cm,bottom=3.0cm}  % 页边距
+
+% 页眉相关的设置
+\usepackage{fancyhdr}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% cqzw555 添加的包
+\usepackage[list=off]{bicaption} % 在 figure 或者 table 环境中使用 \bicaption 命令生成中英文双语标题,list=off代表插图索引表中不出现英文标题
+\captionsetup[figure][bi-second]{name=Figure} %设置图的英文编号前缀
+\captionsetup[table][bi-second]{name=Table} %设置表的英文编号前缀
+\usepackage{newtxtext} % 提供文本的Times New Roman
+% \usepackage{tablefootnote} % 表格脚注
+\usepackage{comment} %注释
+
+% 使用bibtex作为默认文献工具则可以使用gbt7714包，但因为没有找到合适样式而改成biblatex
+%\usepackage{natbib} % biblatex 和 natbib 不兼容,而 gbt7714 和 natbib 是兼容的
+%\usepackage[sort&compress]{gbt7714} %GBT7714文献引用格式
+%\bibliographystyle{gbt7714-numerical}
+\usepackage[backend=biber, style=gb7714-2015]{biblatex} % biblatex
+% 使用biblatex时需要将texstudio中默文献工具改为biber，默认编译器改为pdflatex
+% texlive(2023) 中基于 biblatex 实现的 gb7714 有多个样式，分别如下
+%   标准版gb7714: gb7714-2015,gb7714-2005，gb7714-1987
+%   按照author，year顺序进行引用的：gb7714-2015ay，gb7714-2005ay
+%   按照引用顺序进行引用的：gb7714-2015ms
+%   numerical sequence and authoryear mixed style:gb7714-2015mx
+%   华中师范大学：gb7714-CCNU
+%   西北农林：gb7714-NWAFU
+%   东南大学：gb7714-SEU
+% 不同样式的效果自行尝试
+
+%这个来自华中师范的样式，关键是lowercase
+\ExecuteBibliographyOptions{
+	gbpunctin    = false,
+	gbfieldtype  = false,       % 输出type域，主要处理学位论文，true在学位论文的[D]后面打印硕士学位论文
+	gbnamefmt=lowercase % 这应该是控制名字首字母大写的
+}
+
+% 没有明确看到这个间距的要求，但看到张喆的间距比我大，把这个设置项添上，以后可能有用
+\setlength{\biblabelsep}{1em} % 设置标签到参考文献内容的间距
+
+% 以下这部分来自西北农林，控制参考文献字号
+\newcommand\nwafubibfont{\zihao{-4}}% 字体
+\renewcommand{\bibfont}{\nwafubibfont}% 全局字体设置
+
+% biblatex 里要求的设置文献库文件的方式
+\addbibresource{master-thesis.bib}
+\usepackage{color}
+\usepackage{booktabs} % for cmd 'toprule', 'bottomrule'
+\usepackage{multirow} % for cmd 'multirow', 'multicolumn'
+\usepackage{enumitem}
+\usepackage{todonotes}
+%\renewcommand{\algorithmcfname}{算法-}  %<---细节与重点
+%\SetKwInput{KwIn}{输入}  %<---细节与重点
+%\SetKwInput{KwOut}{输出}  %<---细节与重点
+% 设置目录格式
+\usepackage{titletoc}
+\usepackage{titlesec}
+%设置目录格式
+%\titlecontents{标题名}[左间距]{标题格式}{标题标志}{无序号标题}{指引线与页码}[下间距]
+\titlecontents{section}[0cm]{\zihao{-4}\bfseries\filright}{\textbf{\thecontentslabel}\quad}
+{}{\textmd{\titlerule*[3pt]{.}\contentspage}}
+% 目录中section标题和序号需要加粗，但指引线和页码不加粗，因此在页码和指引线这里用\textmd让文字回到正常状态
+\titlecontents{subsection}[0.37cm]{\zihao{-4}\filright}{\contentspush{\thecontentslabel}\quad}
+{}{\titlerule*[3pt]{.}\contentspage}
+\titlecontents{subsubsection}[0.74cm]{\zihao{-4}\filright}{\contentspush{\thecontentslabel}\quad}
+{}{\titlerule*[3pt]{.}\contentspage}
+
+% 目录标题为黑体小二，居中对齐；目录内容全为小四号，中文用黑体，英文用Times New Roman，省略号和数字用等线，左端对齐，一级标题置顶并加粗，
+% 其余标题首行缩进0.37 厘米。目录的标题和内容的段前、段后均为0
+
+% 设置标题格式
+\ctexset{
+	section={
+		format+=\heiti\zihao{-2}\centering,  % 定义标题样式，居中对齐
+		name={第,章},
+		number={\chinese{section}},  % 定义标题的标签，即标题的标号
+		aftername=\quad,   % 定义标题和标号之间的水平距离
+		beforeskip=24pt,  %段前 24磅
+		afterskip=18pt  %断后 18磅
+	},
+	subsection={
+		format+=\heiti\zihao{-3}\raggedright,
+		name={},
+		number={\arabic{section}.\arabic{subsection}},
+		aftername=\quad,
+		beforeskip=24pt,  %段前 24磅
+		afterskip=18pt  %断后 18磅
+	},
+	subsubsection={
+		format+=\heiti\zihao{4}\raggedright,
+		name={},
+		number={\arabic{section}.\arabic{subsection}.\arabic{subsubsection}},
+		aftername=\quad,
+		beforeskip=12pt, %段前 12磅
+		afterskip=6pt %段后 6磅
+	}
+}  %设置标题格式
+
+\ctexset{%
+	contentsname={目\hspace{\ccwd}录},
+	listfigurename={插图索引},
+	listtablename={表格索引},
+	figurename={图},
+	tablename={表},
+	bibname={参考文献},
+}
+
+% \usepackage{ulem} % 删除线 \sout
+% cqzw555 添加的包 ending
+
+\setlength{\headheight}{12.64723pt}
+\addtolength{\topmargin}{-0.64723pt}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\fancyhf{}  % 清除默认页眉
+\pagestyle{fancy}
+\lhead{上海大学专业硕士学位论文}  % 添加右侧页眉，专硕
+%\lhead{上海大学硕士学位论文}  % 添加右侧页眉，学硕
+\cfoot{\thepage}  % 添加页脚页码
+
+
+% 图表按章节编号
+\usepackage{chngcntr}
+\counterwithin{figure}{section}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%常用的命令
+\newcommand{\red}[1]{{\textcolor{red}{#1}}} % 把一段字标红
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 声明argmin和argmax运算符
+\newcommand{\argmin}{\mathop{\mathrm{argmin}}\limits}
+\newcommand{\argmax}{\mathop{\mathrm{argmax}}\limits}
+
+% 开始正文
+\begin{document}
+% 正文格式设置
+
+\zihao{-4} % 小四 字体默认宋体
+%\linespread{1.5} \selectfont  % 调整全文为1.4倍line间距，非常接近word版本1.5行间距%By Kuber
+\linespread{1.64} \selectfont  % 将行距优化为1.64倍间距
+% 目录之后的页码是大写罗马数字
+%\begin{comment}
+\includepdf[pages={1-5}]{Professional-Master.pdf} % 专硕的封面
+% \includepdf[pages={1-5}]{cover.pdf} % 学硕的封面
+\pagenumbering{Roman} %页码 罗马字母
+\setcounter{page}{1}  % LaTeX的起始页码
+
+\include{sections/abstract.tex}
+
+\pagebreak 
+
+% 由于目录(TOC: table of contents)也会被hyperref作为超链接，因此颜色会被设置为和图表超链接一样的红色，红色的目录不好看。
+% 这里单独把TOC的颜色设置为黑色。
+{\hypersetup{linkcolor=black}\tableofcontents}
+%\end{comment}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 绪论
+\pagebreak
+\pagenumbering{arabic}
+\setcounter{page}{1}  % LaTeX的起始页码
+\include{sections/section1.tex}
+%
+\pagebreak
+\include{sections/section2.tex}
+
+\pagebreak
+\include{sections/section3.tex}
+
+\pagebreak
+\include{sections/section4.tex}
+
+\pagebreak
+\include{sections/section5.tex}
+
+%\begin{comment}
+% 插图索引表
+\pagebreak
+\addcontentsline{toc}{section}{插图索引}
+\listoffigures
+\pagebreak
+\addcontentsline{toc}{section}{表格索引}
+\listoftables
+
+%\begin{comment}
+%% 参考文献
+\pagebreak
+\addcontentsline{toc}{section}{参考文献}
+%\bibliography{master-thesis} % bibtex 要求的指定文献可文件的方式 会默认在这里打印参考文献列表,biblatex要求这个命令只能在导言区出现
+% bibintoc就表示会在目录中加参考文献
+\printbibliography[] % biblatex 打印文献列表的方式
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagebreak
+\include{sections/achievement.tex}
+
+\pagebreak
+\include{sections/acknowledgments.tex}
+
+\end{document}

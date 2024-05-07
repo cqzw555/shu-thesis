@@ -1,0 +1,67 @@
+% !TeX spellcheck = <none>
+\section{公式}
+
+便快捷的公式输入是\LaTeX相比于Word的主要优势之一，在熟练掌握的情况下
+公式输入的效率会有很大提升。
+
+\LaTeX中的公式主要分为两类：\red{行内公式}和\red{行间公式}。
+这是一个行内公式$f(x) = \frac{1}{\sqrt{2\pi}\sigma}\exp{(-\frac{(x-\mu)^2}{2\sigma^2})}$。下面是一个行间公式：
+$$
+f(x) = \frac{1}{\sqrt{2\pi}\sigma}\exp{(-\frac{(x-\mu)^2}{2\sigma^2})}
+$$
+这是一个带有编号的公式：
+\begin{equation}
+	f(x)= |x| = 
+	\begin{cases}
+		x,& \text{if } x\geq 0\\
+		-x,              & \text{otherwise}
+	\end{cases}
+	\label{eq:cases}
+\end{equation}
+多行连等公式：
+\begin{equation}
+	\begin{split}
+		f(x) &= |x| \\
+		&= \begin{cases}
+			x,& \text{if } x\geq 0\\
+			-x,              & \text{otherwise}
+		\end{cases}
+	\end{split}
+\end{equation}
+带有矩阵的公式：
+\begin{equation}
+	\mathbf{H} = -\mathbf\mu \cdot \mathbf{B} = -\gamma B_o \mathbf{S}_z = -\frac{\gamma B_o\hbar}{2} 
+	\begin{bmatrix}
+		1& \cdots &1\\ 
+		\vdots & \ddots & \vdots \\
+		1 & \cdots & 1 
+	\end{bmatrix}.
+	\label{eq:matrix}
+\end{equation}
+带有矢量的公式：%By Kuber
+\begin{equation}
+	\label{eq:current_density_inandout}
+	\bm{J_i} = -\sigma_i \nabla \phi_i ~;~ \bm{J_e}= -\sigma_e \nabla \phi_e ~.
+\end{equation}
+带有联立大括号的公式：%By Kuber
+\begin{equation}
+	\label{eq:runge_p_eq}
+	\left\lbrace
+	\begin{aligned}
+		V_{i+1} &= V_i + c_1 K_1 + c_2 K_2 + \cdots + c_p K_p \\
+		K_1 &= \Delta t f(t_i ,V_i) \\
+		K_2 &= \Delta t f\left(t_i + a_2 \Delta t, V_i + b_{21} K_1\right) \\
+		\cdots&~\cdots~\cdots~\cdots~\cdots~\cdots \\
+		K_p &= \Delta t f\left( t_i + a_p \Delta t, V_i + b_{p1} K_1 + \cdots + b_{p,p-1} K_{p-1}\right) ~.
+	\end{aligned}
+	\right.
+\end{equation}
+对于一个神经网络的求解问题可以公式化成以下形式：
+\begin{equation}
+	\Theta = \argmin_{\theta} J(\theta)
+	\label{eq:argmin}
+\end{equation}
+式\ref{eq:argmin}中$\Theta$为求得的最佳参数，$\theta$为神经网络的参数，$J(\theta)$为误差函数。
+
+公式可以添加label属性，并在后文中引用。比如公式~\ref{eq:matrix}就可以被引用，
+而且点击引用号可以迅速跳转，详情请见第\ref{sec:ref}章。
